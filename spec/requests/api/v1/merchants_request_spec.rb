@@ -24,7 +24,7 @@ describe 'Merchants API' do
   end
 
   it 'can find a merchant by parameter id' do
-    merchant = create(:merchant, id: 1)
+    merchant_1 = create(:merchant, id: 1)
     merchant_2 = create(:merchant, id: 2)
 
     get "/api/v1/merchants/find?id=2"
