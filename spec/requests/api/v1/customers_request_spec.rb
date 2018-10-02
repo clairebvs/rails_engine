@@ -129,4 +129,18 @@ describe 'Customers API' do
     expect(customer.last["last_name"]).to eq(customer_4.last_name)
   end
 
+  it 'can find all customers by params created at' do
+    customer_1 = create(:customer, created_at: '09-12-2018')
+    customer_2 = create(:customer, created_at: '04-02-2018')
+    customer_3 = create(:customer, created_at: '09-12-2018')
+
+    get '/api/v1/customers/find_all?created_at=09-12-2018'
+
+    customer = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(customer.count).to eq(2)
+    expect(customer.last["id"]).to eq(customer_3.id)
+  end
+
 end
