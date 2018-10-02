@@ -85,4 +85,19 @@ describe 'Customers API' do
     expect(customer["id"]).to eq(customer_1.id)
   end
 
+  #  FINDER find_all?..
+
+  it 'can find all customers by params id' do
+    customer = create(:customer, id: 1)
+    customer_2 = create(:customer, id: 2)
+    customer_3 = create(:customer, id: 3)
+
+    get '/api/v1/customers/find_all?id=3'
+
+    customer = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(customer["id"]).to eq(customer_3.id)
+  end
+
 end
