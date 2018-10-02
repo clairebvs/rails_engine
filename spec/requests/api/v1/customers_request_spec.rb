@@ -38,7 +38,7 @@ describe 'Customers API' do
   end
 
   it 'can find one customer by params first_name' do
-    customer = create(:customer, first_name: 'Joseph')
+    customer_1 = create(:customer, first_name: 'Joseph')
     customer_2 = create(:customer, first_name: 'Jessica')
 
     get '/api/v1/customers/find?first_name=Jessica'
@@ -48,4 +48,17 @@ describe 'Customers API' do
     expect(response).to be_successful
     expect(customer["first_name"]).to eq(customer_2.first_name)
   end
+
+  it 'can find one customer by params last_name' do
+    customer_1 = create(:customer, last_name: 'Ande')
+    customer_2 = create(:customer, last_name: 'Biur')
+
+    get '/api/v1/customers/find?last_name=Ande'
+
+    customer = JSON.parse(response.body)
+    
+    expect(response).to be_successful
+    expect(customer["last_name"]).to eq(customer_1.last_name)
+  end
+
 end
