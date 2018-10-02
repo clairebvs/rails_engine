@@ -4,17 +4,17 @@ namespace :import do
   desc "Import data from all CSV files and store in database"
 
   task all: :environment do
+    CSV.foreach('db/csv/merchants.csv', headers: true, header_converters: :symbol) do |row|
+      Merchant.create(id: row[:id],
+                      name: row[:name],
+                      created_at: row[:created_at],
+                      updated_at: row[:updated_at])
+    end
+    
     CSV.foreach('db/csv/customers.csv', headers: true, header_converters: :symbol) do |row|
       Customer.create(id: row[:id],
                       first_name: row[:first_name],
                       last_name: row[:last_name],
-                      created_at: row[:created_at],
-                      updated_at: row[:updated_at])
-    end
-
-    CSV.foreach('db/csv/merchants.csv', headers: true, header_converters: :symbol) do |row|
-      Merchant.create(id: row[:id],
-                      name: row[:name],
                       created_at: row[:created_at],
                       updated_at: row[:updated_at])
     end
