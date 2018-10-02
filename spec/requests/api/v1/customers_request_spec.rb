@@ -114,4 +114,19 @@ describe 'Customers API' do
     expect(customer.first["first_name"]).to eq(customer_1.first_name)
   end
 
+  it 'can find all customers by params last name' do
+    customer_1 = create(:customer, last_name: 'Favre')
+    customer_2 = create(:customer, last_name: 'Perez')
+    customer_3 = create(:customer, last_name: 'Perez')
+    customer_4 = create(:customer, last_name: 'Perez')
+
+    get '/api/v1/customers/find_all?last_name=Perez'
+
+    customer = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(customer.count).to eq(3)
+    expect(customer.last["last_name"]).to eq(customer_4.last_name)
+  end
+
 end
