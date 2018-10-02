@@ -47,4 +47,29 @@ describe 'Merchants API' do
     expect(merchant["name"]).to eq(merchant_2.name)
   end
 
+  xit 'can find a merchant by parameter created_at' do
+    merchant_1 = create(:merchant, id: 1, created_at: '20-03-2018')
+    merchant_2 = create(:merchant, id: 2, created_at: '23-04-2018')
+
+    get "/api/v1/merchants/find?created_at=23-04-2018"
+
+    merchant = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(merchant["created_at"]).to eq(merchant_2.created_at)
+  end
+
+  it 'can find all merchants by params id' do
+    merchant_1 = create(:merchant, id: 1)
+    merchant_2 = create(:merchant, id: 2)
+    merchant_3 = create(:merchant, id: 3)
+
+    get "/api/v1/merchants/find_all?id=3"
+
+    merchant = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(merchant["id"].to eq(merchant_3.id))
+  end
+
 end
