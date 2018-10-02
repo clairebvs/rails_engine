@@ -73,4 +73,16 @@ describe 'Customers API' do
     expect(customer["id"]).to eq(customer_2.id)
   end
 
+  it 'can find one customer by params updated_at' do
+    customer_1 = create(:customer, updated_at: '02-08-2018')
+    customer_2 = create(:customer, updated_at: '02-22-2018')
+
+    get '/api/v1/customers/find?updated_at=02-08-2018'
+
+    customer = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(customer["id"]).to eq(customer_1.id)
+  end
+
 end
