@@ -56,9 +56,21 @@ describe 'Customers API' do
     get '/api/v1/customers/find?last_name=Ande'
 
     customer = JSON.parse(response.body)
-    
+
     expect(response).to be_successful
     expect(customer["last_name"]).to eq(customer_1.last_name)
+  end
+
+  it 'can find one customer by params created_at' do
+    customer_1 = create(:customer, created_at: '11-02-2018')
+    customer_2 = create(:customer, created_at: '02-05-2018')
+
+    get '/api/v1/customers/find?created_at=02-05-2018'
+
+    customer = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(customer["id"]).to eq(customer_2.id)
   end
 
 end
