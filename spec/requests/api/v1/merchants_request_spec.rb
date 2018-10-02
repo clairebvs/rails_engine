@@ -23,6 +23,8 @@ describe 'Merchants API' do
     expect(merchant["id"]).to eq(id)
   end
 
+  # FINDER find?params
+
   it 'can find a merchant by parameter id' do
     merchant_1 = create(:merchant, id: 1)
     merchant_2 = create(:merchant, id: 2)
@@ -59,6 +61,8 @@ describe 'Merchants API' do
     expect(merchant["created_at"]).to eq(merchant_2.created_at)
   end
 
+  # FINDER find_all?
+
   it 'can find all merchants by params id' do
     merchant_1 = create(:merchant, id: 1)
     merchant_2 = create(:merchant, id: 2)
@@ -69,7 +73,21 @@ describe 'Merchants API' do
     merchant = JSON.parse(response.body)
 
     expect(response).to be_successful
-    expect(merchant["id"].to eq(merchant_3.id))
+    expect(merchant.first["id"]).to eq(merchant_3.id)
+  end
+
+  it 'can find all merchants by params name' do
+    merchant_1 = create(:merchant, id: 1, name: 'Sylvana')
+    merchant_2 = create(:merchant, id: 2, name: 'Sylvana')
+    merchant_3 = create(:merchant, id: 3, name: 'Camilla')
+
+    get "/api/v1/merchants/find_all?name=Sylvana"
+
+    merchant = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(merchant.count).to eq(2)
+    expect(merchant.first["id"]).to eq(merchant_1.id)
   end
 
 end
