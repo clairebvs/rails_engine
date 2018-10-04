@@ -13,6 +13,9 @@ describe 'Merchants relationships endpoint' do
       items = JSON.parse(response.body)
 
       expect(items.count).to eq(5)
+      expect(items.first).to have_key("name")
+      expect(items.first).to have_key("description")
+      expect(items.first).to have_key("unit_price")
     end
   end
 
@@ -29,6 +32,7 @@ describe 'Merchants relationships endpoint' do
       invoices = JSON.parse(response.body)
 
       expect(invoices.count).to eq(4)
+      expect(invoices.first).to have_key("status")
     end
   end
 end
