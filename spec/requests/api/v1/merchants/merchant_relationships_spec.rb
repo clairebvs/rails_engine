@@ -28,7 +28,7 @@ describe 'Merchants relationships endpoint' do
 
       invoices = JSON.parse(response.body)
 
-      expect(invoices.count).to eq(5)
+      expect(invoices.count).to eq(4)
     end
   end
 end
