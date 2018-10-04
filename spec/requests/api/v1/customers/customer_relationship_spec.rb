@@ -16,7 +16,7 @@ describe 'Customers relationships endpoint' do
       expect(invoices.count).to eq(7)
       expect(invoices.first).to have_key("customer_id")
       expect(invoices.first).to have_key("merchant_id")
-      expect(invoices.first).to have_key("unit_price")
+      expect(invoices.first).to have_key("status")
     end
   end
 end
