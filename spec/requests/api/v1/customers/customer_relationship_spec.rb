@@ -19,4 +19,24 @@ describe 'Customers relationships endpoint' do
       expect(invoices.first).to have_key("status")
     end
   end
+
+  context 'GET /api/v1/customers/:id/transactions' do
+    it 'returns a collection of associated transactions' do
+      merchant_id = create(:merchant).id
+      customer_id = create(:customer).id
+      invoice = create(:invoice, merchant_id: merchant_id, customer_id: customer_id).id
+      create_list(:transaction, 3, invoice_id: invoice)
+
+      get "/api/v1/customers/#{customer_id}/transactions"
+
+      expect(response).to be_successful
+
+      transactions = JSON.parse(response.body)
+
+      expect(transactions.count).to eq(3)
+      expect(transactions.first).to have_key("invoice_id")
+      expect(transactions.first).to have_key("credit_card_number")
+      expect(transactions.first).to have_key("result")
+    end
+  end
 end
