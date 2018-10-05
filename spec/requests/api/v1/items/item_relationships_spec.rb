@@ -22,4 +22,23 @@ describe 'Items relationships endpoint' do
       expect(invoice_items.first).to have_key("unit_price")
     end
   end
+
+  context 'GET /api/v1/items/:id/merchant' do
+    it 'returns the associated merchant' do
+      merch_id = create(:merchant).id
+      item_id = create(:item, merchant_id: merch_id).id
+
+      get "/api/v1/items/#{item_id}/merchant"
+
+      expect(response).to be_successful
+
+      merchant = JSON.parse(response.body)
+
+      expect(merchant.count).to eq(4)
+      expect(merchant.first).to have_key("item_id")
+      expect(merchant.first).to have_key("invoice_id")
+      expect(merchant.first).to have_key("quantity")
+      expect(merchant.first).to have_key("unit_price")
+    end
+  end
 end
