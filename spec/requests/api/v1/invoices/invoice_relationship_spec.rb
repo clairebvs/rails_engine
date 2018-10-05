@@ -48,8 +48,8 @@ describe 'Invoices relationships endpoint' do
       merchant_id = create(:merchant).id
       customer_id = create(:customer).id
       invoice_id = create(:invoice, merchant_id: merchant_id, customer_id: customer_id).id
-      create_list(:item, 4, merchant_id: merchant_id)
-      # create_list(:invoice_item, 3, invoice_id: invoice_id, item_id: item_id)
+      item_1 = create(:item, merchant_id: merchant_id).id
+      invoice_item = create(:invoice_item, item_id: item_1, invoice_id: invoice_id)
 
       get "/api/v1/invoices/#{invoice_id}/items"
 
@@ -57,10 +57,10 @@ describe 'Invoices relationships endpoint' do
 
       items = JSON.parse(response.body)
 
-      expect(items.count).to eq(4)
+      expect(items.count).to eq(1)
       expect(items.first).to have_key("name")
       expect(items.first).to have_key("description")
-      expect(items.first).to have_key("price")
+      expect(items.first).to have_key("unit_price")
       expect(items.first).to have_key("merchant_id")
     end
   end
