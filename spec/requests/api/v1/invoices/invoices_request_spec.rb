@@ -115,4 +115,6 @@ describe 'Invoices API' do
     expect(response).to be_successful
     expect(invoice["id"]).to eq(invoice_1.id)
   end
+
+  # FINDER ALL
 end
