@@ -14,10 +14,7 @@ describe 'Transactions relationships endpoint' do
 
       invoice = JSON.parse(response.body)
 
-      expect(invoice.count).to eq(1)
-      expect(invoice.first).to have_key("customer_id")
-      expect(invoice.first).to have_key("merchant_id")
-      expect(invoice.first).to have_key("status")
+      expect(invoice.count).to eq(6)
     end
   end
 end
