@@ -79,9 +79,9 @@ describe 'Invoices relationships endpoint' do
 
       customer = JSON.parse(response.body)
 
-      expect(customer.count).to eq(1)
-      expect(customer.first).to have_key("first_name")
-      expect(customer.first).to have_key("last_name")
+      expect(customer.count).to eq(3)
+      expect(customer).to have_key("first_name")
+      expect(customer).to have_key("last_name")
     end
   end
 end
