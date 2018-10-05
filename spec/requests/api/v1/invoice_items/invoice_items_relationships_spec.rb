@@ -25,6 +25,7 @@ describe 'InvoiceItems relationships endpoint' do
       merch_id = create(:merchant).id
       item_id = create(:item, merchant_id: merch_id).id
       cust_id = create(:customer).id
+      cust_id = create(:customer).id
       invoice_id = create(:invoice, customer_id: cust_id, merchant_id: merch_id).id
       invoice_it_id = create(:invoice_item, item_id: item_id, invoice_id: invoice_id).id
 
