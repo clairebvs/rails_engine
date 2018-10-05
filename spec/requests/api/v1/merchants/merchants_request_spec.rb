@@ -141,4 +141,24 @@ describe 'Merchants API' do
     expect(merchant.count).to eq(2)
   end
 
+  # Business Intelligence Enpoint
+  xit 'returns the total revenue for all merchants on a date' do
+    merchant = create(:merchant).id
+    customer_id = create(:customer).id
+    item_id = create(:item, merchant_id: merchant).id
+    invoice_id = create(:invoice, merchant_id: merchant, customer_id: customer_id, updated_at: '2018-08-12').id
+    invoice_item = create(:invoice_item, item_id: item_id, invoice_id: invoice_id, quantity: 2, unit_price: 6)
+
+    get '/api/v1/merchants/revenue?date=2018-08-12'
+
+    date = '2018-08-12'
+    parsed_date = Date.parse("#{date} 00:00:00 UTC")
+    Merchant.total_revenue_all_merchants_on_date(parsed_date)
+
+    merchant_revenue = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(merchant_revenue).to eq({"total_revenue"=>"12"})
+  end
+
 end
