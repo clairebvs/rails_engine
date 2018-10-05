@@ -26,4 +26,20 @@ describe 'Invoices API' do
     expect(response).to be_successful
     expect(invoice["id"]).to eq(id)
   end
+
+  # FINDER find
+
+  it 'can find one invoice by params id' do
+    merchant_id = create(:merchant).id
+    customer_id = create(:customer).id
+    invoice = create(:invoice, id: 1, merchant_id: merchant_id, customer_id: customer_id)
+    invoice_2 = create(:invoice, id: 2, merchant_id: merchant_id, customer_id: customer_id)
+
+    get '/api/v1/invoices/find?id=2'
+
+    invoice = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(invoice["id"]).to eq(invoice_2.id)
+  end
 end
