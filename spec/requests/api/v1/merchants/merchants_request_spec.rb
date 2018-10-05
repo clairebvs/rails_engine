@@ -142,7 +142,7 @@ describe 'Merchants API' do
   end
 
   # Business Intelligence Enpoint
-  xit 'returns the total revenue for all merchants on a date' do
+  it 'returns the total revenue for all merchants on a date' do
     merchant = create(:merchant).id
     customer_id = create(:customer).id
     item_id = create(:item, merchant_id: merchant).id
