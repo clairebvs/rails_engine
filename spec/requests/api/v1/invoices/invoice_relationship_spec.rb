@@ -64,4 +64,24 @@ describe 'Invoices relationships endpoint' do
       expect(items.first).to have_key("merchant_id")
     end
   end
+
+  context 'GET /api/v1/invoices/:id/customer' do
+    it 'returns the associated customer' do
+      merchant_id = create(:merchant).id
+      customer_id = create(:customer).id
+      invoice_id = create(:invoice, merchant_id: merchant_id, customer_id: customer_id).id
+      item_id = create(:item, merchant_id: merchant_id).id
+      create_list(:invoice_item, 3, invoice_id: invoice_id, item_id: item_id)
+
+      get "/api/v1/invoices/#{invoice_id}/customer"
+
+      expect(response).to be_successful
+
+      customer = JSON.parse(response.body)
+
+      expect(customer.count).to eq(1)
+      expect(customer.first).to have_key("first_name")
+      expect(customer.first).to have_key("last_name")
+    end
+  end
 end
