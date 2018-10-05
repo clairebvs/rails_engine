@@ -33,12 +33,8 @@ describe 'Items relationships endpoint' do
       expect(response).to be_successful
 
       merchant = JSON.parse(response.body)
-
-      expect(merchant.count).to eq(4)
-      expect(merchant.first).to have_key("item_id")
-      expect(merchant.first).to have_key("invoice_id")
-      expect(merchant.first).to have_key("quantity")
-      expect(merchant.first).to have_key("unit_price")
+      
+      expect(merchant.count).to eq(2)
     end
   end
 end
