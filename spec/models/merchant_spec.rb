@@ -18,7 +18,7 @@ RSpec.describe Merchant, type: :model do
       customer_id = create(:customer).id
       invoice = create(:invoice, merchant_id: merchant_id, customer_id: customer_id)
       item_id = create(:item, merchant_id: merchant_id).id
-      invoice_items_1 = create(:invoice_items, item_id: item_id, quantity: 2, unit_price: 4)
+      invoice_items_1 = create(:invoice_item, item_id: item_id, quantity: 2, unit_price: 4)
 
       expect(Merchant.total_revenue_all_merchants_on_date).to eq(8)
     end
