@@ -7,6 +7,6 @@ class Api::V1::Transactions::SearchController < ApplicationController
   private
 
   def transaction_params
-    params.permit(:id, :credit_card_number)
+    params.permit(:id, :credit_card_number, :result)
   end
 end
