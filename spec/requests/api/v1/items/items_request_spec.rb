@@ -118,4 +118,19 @@ describe 'Items API' do
     expect(item["id"]).to eq(item_2.id)
   end
 
+  # FINDER find_all?query=params
+
+  it 'can find all item by params id' do
+    merchant_id = create(:merchant).id
+    item_1 = create(:item, id: 1, merchant_id: merchant_id)
+    item_2 = create(:item, id: 2, merchant_id: merchant_id)
+
+    get '/api/v1/items/find_all?id=2'
+
+    item = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(item.first["id"]).to eq(item_2.id)
+  end
+
 end
