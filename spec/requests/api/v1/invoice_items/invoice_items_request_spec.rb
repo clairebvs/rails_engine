@@ -202,4 +202,22 @@ describe 'Invoice Items API' do
     expect(invoice_items.count).to eq(2)
     expect(invoice_items.first["item_id"]).to eq(invoice_item_1.item_id)
   end
+
+  it 'can find all invoice items by params quantity' do
+    merchant_id = create(:merchant).id
+    customer_id = create(:customer).id
+    invoice_id = create(:invoice, merchant_id: merchant_id, customer_id: customer_id).id
+    item_id = create(:item, merchant_id: merchant_id).id
+    invoice_item_1 = create(:invoice_item, invoice_id: invoice_id, item_id: item_id, quantity: 5)
+    invoice_item_2 = create(:invoice_item, invoice_id: invoice_id, item_id: item_id, quantity: 2)
+    invoice_item_3 = create(:invoice_item, invoice_id: invoice_id, item_id: item_id, quantity: 2)
+
+    get "/api/v1/invoice_items/find_all?quantity=2"
+
+    invoice_items = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(invoice_items.count).to eq(2)
+    expect(invoice_items.first["quantity"]).to eq(invoice_item_2.quantity)
+  end
 end
