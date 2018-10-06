@@ -14,4 +14,18 @@ describe 'Transactions API' do
     expect(response).to be_successful
     expect(transactions.count).to eq 3
   end
+
+  it 'can get one transaction by its id' do
+    merchant_id = create(:merchant).id
+    customer_id = create(:customer).id
+    invoice_id = create(:invoice, merchant_id: merchant_id, customer_id: customer_id).id
+    id = create(:transaction, id: 2, invoice_id: invoice_id).id
+
+    get "/api/v1/transactions/#{id}"
+
+    transaction = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(transaction["id"]).to eq(id)
+  end
 end
