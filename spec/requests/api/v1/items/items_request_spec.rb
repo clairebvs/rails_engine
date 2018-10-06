@@ -149,5 +149,20 @@ describe 'Items API' do
     expect(items.first["name"]).to eq(item_2.name)
   end
 
+  it 'can find all items by params description' do
+    merchant_id = create(:merchant).id
+    item_1 = create(:item, id: 1, merchant_id: merchant_id, description: 'great')
+    item_2 = create(:item, id: 2, merchant_id: merchant_id, description: 'useful')
+    item_3 = create(:item, id: 3, merchant_id: merchant_id, description: 'useful')
+
+    get '/api/v1/items/find_all?description=useful'
+
+    items = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(items.count).to eq(2)
+    expect(items.first["description"]).to eq(item_2.description)
+  end
+
 
 end
