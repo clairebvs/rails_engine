@@ -65,4 +65,21 @@ describe 'Invoice Items API' do
     expect(response).to be_successful
     expect(invoice_item["item_id"]).to eq(invoice_item_1.item_id)
   end
+
+  it 'can find one invoice item by params invoice id' do
+    merchant_id = create(:merchant).id
+    customer_id = create(:customer).id
+    invoice_id_1 = create(:invoice, id: 1, merchant_id: merchant_id, customer_id: customer_id).id
+    invoice_id_2 = create(:invoice, id: 2, merchant_id: merchant_id, customer_id: customer_id).id
+    item_id = create(:item, merchant_id: merchant_id).id
+    invoice_item_1 = create(:invoice_item, invoice_id: invoice_id_1, item_id: item_id)
+    invoice_item_2 = create(:invoice_item, invoice_id: invoice_id_2, item_id: item_id)
+
+    get "/api/v1/invoice_items/find?invoice_id=2"
+
+    invoice_item = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(invoice_item["invoice_id"]).to eq(invoice_item_2.invoice_id)
+  end
 end
