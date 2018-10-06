@@ -1,7 +1,11 @@
 class Api::V1::Items::SearchController < ApplicationController
 
   def show
-    render json: Item.find_by(item_search_params)
+    if params[:name]
+      render json: Item.find_by('LOWER(name) = ?', params[:name].downcase)
+    else
+      render json: Item.find_by(item_search_params)
+    end
   end
 
   private

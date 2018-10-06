@@ -51,4 +51,5 @@ describe 'Items API' do
     expect(response).to be_successful
     expect(item["id"]).to eq(item_2.id)
   end
+  # have to implement now with case insensitive
 end
