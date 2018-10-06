@@ -70,12 +70,26 @@ describe 'Items API' do
     item_1 = create(:item, id: 1, merchant_id: merchant_id, unit_price: 12)
     item_2 = create(:item, id: 2, merchant_id: merchant_id, unit_price: 1)
 
-    get '/api/v1/items/find?price=12'
+    get '/api/v1/items/find?unit_price=12'
 
     item = JSON.parse(response.body)
 
     expect(response).to be_successful
     expect(item["unit_price"]).to eq(item_1.unit_price)
+  end
+
+  it 'can find one item by params merchant id' do
+    merchant_id_1 = create(:merchant, id: 2).id
+    merchant_id_2 = create(:merchant, id: 3).id
+    item_1 = create(:item, id: 1, merchant_id: merchant_id_2, unit_price: 12)
+    item_2 = create(:item, id: 2, merchant_id: merchant_id_1, unit_price: 1)
+
+    get '/api/v1/items/find?merchant_id=3'
+
+    item = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(item["merchant_id"]).to eq(item_1.merchant_id)
   end
 
 end
