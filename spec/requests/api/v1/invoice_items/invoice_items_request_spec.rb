@@ -130,4 +130,20 @@ describe 'Invoice Items API' do
     expect(response).to be_successful
     expect(invoice_item["id"]).to eq(invoice_item_2.id)
   end
+
+  it 'can find one invoice item by params updated at' do
+    merchant_id = create(:merchant).id
+    customer_id = create(:customer).id
+    invoice_id = create(:invoice, merchant_id: merchant_id, customer_id: customer_id).id
+    item_id = create(:item, merchant_id: merchant_id).id
+    invoice_item_1 = create(:invoice_item, invoice_id: invoice_id, item_id: item_id, updated_at: '2018-03-10')
+    invoice_item_2 = create(:invoice_item, invoice_id: invoice_id, item_id: item_id, updated_at: '2018-01-24')
+
+    get "/api/v1/invoice_items/find?updated_at=2018-01-24"
+
+    invoice_item = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(invoice_item["id"]).to eq(invoice_item_2.id)
+  end
 end
