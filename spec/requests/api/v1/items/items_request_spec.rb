@@ -194,4 +194,35 @@ describe 'Items API' do
     expect(items.count).to eq(2)
     expect(items.first["merchant_id"]).to eq(item_2.merchant_id)
   end
+
+  it 'can find all items by params created at' do
+    merchant_id = create(:merchant).id
+    item_1 = create(:item, merchant_id: merchant_id, created_at: '2018-10-15')
+    item_2 = create(:item, merchant_id: merchant_id, created_at: '2018-09-15')
+    item_3 = create(:item, merchant_id: merchant_id, created_at: '2018-09-15')
+
+    get '/api/v1/items/find_all?created_at=2018-09-15'
+
+    items = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(items.count).to eq(2)
+    expect(items.first["id"]).to eq(item_2.id)
+  end
+
+  it 'can find all items by params updated at' do
+    merchant_id = create(:merchant).id
+    item_1 = create(:item, merchant_id: merchant_id, updated_at: '2018-10-15')
+    item_2 = create(:item, merchant_id: merchant_id, updated_at: '2017-09-15')
+    item_3 = create(:item, merchant_id: merchant_id, updated_at: '2017-09-15')
+
+    get '/api/v1/items/find_all?updated_at=2017-09-15'
+
+    items = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(items.count).to eq(2)
+    expect(items.first["id"]).to eq(item_2.id)
+  end
+
 end
