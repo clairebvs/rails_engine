@@ -75,4 +75,19 @@ describe 'Transactions API' do
     expect(response).to be_successful
     expect(transaction["result"]).to eq(transaction_1.result)
   end
+
+  it 'can find one transaction by params result' do
+    merchant_id = create(:merchant).id
+    customer_id = create(:customer).id
+    invoice_id = create(:invoice, merchant_id: merchant_id, customer_id: customer_id).id
+    transaction_1 = create(:transaction, id: 1, invoice_id: invoice_id, created_at: '2018-03-04')
+    transaction_2 = create(:transaction, id: 2, invoice_id: invoice_id, created_at: '2018-01-09')
+
+    get '/api/v1/transactions/find?created_at=2018-01-09'
+
+    transaction = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(transaction["id"]).to eq(transaction_2.id)
+  end
 end
