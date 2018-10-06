@@ -149,6 +149,22 @@ describe 'Invoice Items API' do
 
   # FINDER find_all?query=parameters
 
+  it 'can find all invoices item by params id' do
+    merchant_id = create(:merchant).id
+    customer_id = create(:customer).id
+    invoice_id = create(:invoice, merchant_id: merchant_id, customer_id: customer_id).id
+    item_id = create(:item, merchant_id: merchant_id).id
+    invoice_item_1 = create(:invoice_item, id: 3, item_id: item_id, invoice_id: invoice_id)
+    invoice_item_2 = create(:invoice_item, id: 2, item_id: item_id, invoice_id: invoice_id)
+
+    get "/api/v1/invoice_items/find_all?id=2"
+
+    invoice_items = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(invoice_items.first["id"]).to eq(invoice_item_2.id)
+  end
+
   it 'can find all invoice items by params invoice id' do
     merchant_id = create(:merchant).id
     customer_id = create(:customer).id
@@ -157,12 +173,33 @@ describe 'Invoice Items API' do
     item_id = create(:item, merchant_id: merchant_id).id
     invoice_item_1 = create(:invoice_item, invoice_id: invoice_id_1, item_id: item_id)
     invoice_item_2 = create(:invoice_item, invoice_id: invoice_id_2, item_id: item_id)
+    invoice_item_3 = create(:invoice_item, invoice_id: invoice_id_2, item_id: item_id)
 
     get "/api/v1/invoice_items/find_all?invoice_id=2"
 
     invoice_items = JSON.parse(response.body)
 
     expect(response).to be_successful
+    expect(invoice_items.count).to eq(2)
     expect(invoice_items.first["invoice_id"]).to eq(invoice_item_2.invoice_id)
+  end
+
+  it 'can find all invoices item by params item id' do
+    merchant_id = create(:merchant).id
+    customer_id = create(:customer).id
+    invoice_id = create(:invoice, merchant_id: merchant_id, customer_id: customer_id).id
+    item_id_1 = create(:item, id: 2, merchant_id: merchant_id).id
+    item_id_2 = create(:item, id: 3, merchant_id: merchant_id).id
+    invoice_item_1 = create(:invoice_item, item_id: item_id_1, invoice_id: invoice_id)
+    invoice_item_2 = create(:invoice_item, item_id: item_id_1, invoice_id: invoice_id)
+    invoice_item_3 = create(:invoice_item, item_id: item_id_2, invoice_id: invoice_id)
+
+    get "/api/v1/invoice_items/find_all?item_id=2"
+
+    invoice_items = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(invoice_items.count).to eq(2)
+    expect(invoice_items.first["item_id"]).to eq(invoice_item_1.item_id)
   end
 end
