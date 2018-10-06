@@ -225,4 +225,18 @@ describe 'Transactions API' do
     expect(transactions.first["id"]).to eq(transaction_1.id)
   end
 
+  it 'finds a random transaction' do
+    merchant_id = create(:merchant).id
+    customer_id = create(:customer).id
+    invoice_id = create(:invoice, merchant_id: merchant_id, customer_id: customer_id).id
+    transaction_1 = create(:transaction, id: 1, invoice_id: invoice_id)
+
+    get '/api/v1/transactions/random.json'
+
+    transaction = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(transaction.count).to eq(6)
+  end
+
 end
