@@ -16,7 +16,7 @@ describe 'InvoiceItems relationships endpoint' do
 
       invoice = JSON.parse(response.body)
 
-      expect(invoice.count).to eq(6)
+      expect(invoice.count).to eq(4)
     end
   end
 
