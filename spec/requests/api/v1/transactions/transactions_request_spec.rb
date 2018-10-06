@@ -105,4 +105,22 @@ describe 'Transactions API' do
     expect(response).to be_successful
     expect(transaction["id"]).to eq(transaction_1.id)
   end
+
+  # FINDER find_all?query=parameter
+
+  it 'can find all transactions by params id' do
+    merchant_id = create(:merchant).id
+    customer_id = create(:customer).id
+    invoice_id = create(:invoice, merchant_id: merchant_id, customer_id: customer_id).id
+    transaction = create(:transaction, id: 1, invoice_id: invoice_id)
+    transaction_2 = create(:transaction, id: 2, invoice_id: invoice_id)
+
+    get '/api/v1/transactions/find_all?id=2'
+
+    transactions = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(transactions.count).to eq(1)
+    expect(transactions.first["id"]).to eq(transaction_2.id)
+  end
 end
