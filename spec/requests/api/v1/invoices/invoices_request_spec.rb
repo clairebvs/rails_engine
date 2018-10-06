@@ -214,4 +214,17 @@ describe 'Invoices API' do
     expect(invoices.first["id"]).to eq(invoice_1.id)
   end
 
+  it 'finds a random invoice' do
+    merchant_id = create(:merchant).id
+    customer_id = create(:customer).id
+    create(:invoice, customer_id: customer_id, merchant_id: merchant_id)
+
+    get '/api/v1/invoices/random.json'
+
+    invoice = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(invoice.count).to eq(4)
+  end
+
 end
