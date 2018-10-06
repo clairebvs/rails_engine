@@ -45,4 +45,19 @@ describe 'Transactions API' do
     expect(response).to be_successful
     expect(transaction["id"]).to eq(transaction_2.id)
   end
+
+  it 'can find one transaction by params credit card number' do
+    merchant_id = create(:merchant).id
+    customer_id = create(:customer).id
+    invoice_id = create(:invoice, merchant_id: merchant_id, customer_id: customer_id).id
+    transaction = create(:transaction, id: 1, invoice_id: invoice_id, credit_card_number: '13311')
+    transaction_2 = create(:transaction, id: 2, invoice_id: invoice_id, credit_card_number: '13322')
+
+    get '/api/v1/transactions/find?credit_card_number=13322'
+
+    transaction = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(transaction["credit_card_number"]).to eq(transaction_2.credit_card_number)
+  end
 end
