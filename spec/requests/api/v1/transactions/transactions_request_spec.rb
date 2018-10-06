@@ -209,4 +209,20 @@ describe 'Transactions API' do
     expect(transactions.first["id"]).to eq(transaction_2.id)
   end
 
+  it 'can find all transactions by params updated at' do
+    merchant_id = create(:merchant).id
+    customer_id = create(:customer).id
+    invoice_id = create(:invoice, merchant_id: merchant_id, customer_id: customer_id).id
+    transaction_1 = create(:transaction, id: 1, invoice_id: invoice_id, updated_at: '2018-03-04')
+    transaction_2 = create(:transaction, id: 2, invoice_id: invoice_id, updated_at: '2018-01-09')
+    transaction_3 = create(:transaction, id: 3, invoice_id: invoice_id, updated_at: '2018-03-04')
+
+    get '/api/v1/transactions/find_all?updated_at=2018-03-04'
+
+    transactions = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(transactions.first["id"]).to eq(transaction_1.id)
+  end
+
 end
