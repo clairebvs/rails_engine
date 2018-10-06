@@ -225,4 +225,15 @@ describe 'Items API' do
     expect(items.first["id"]).to eq(item_2.id)
   end
 
+  it 'finds a random item' do
+    merchant_id = create(:merchant).id
+    create(:item, merchant_id: merchant_id)
+
+    get '/api/v1/items/random.json'
+
+    invoice = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(invoice.count).to eq(7)
+  end
 end
