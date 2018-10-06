@@ -105,4 +105,17 @@ describe 'Items API' do
     expect(item["id"]).to eq(item_2.id)
   end
 
+  it 'can find one item by params updated at' do
+    merchant_id = create(:merchant).id
+    item_1 = create(:item, merchant_id: merchant_id, updated_at: '2018-10-15')
+    item_2 = create(:item, merchant_id: merchant_id, updated_at: '2017-09-15')
+
+    get '/api/v1/items/find?updated_at=2017-09-15'
+
+    item = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(item["id"]).to eq(item_2.id)
+  end
+
 end
