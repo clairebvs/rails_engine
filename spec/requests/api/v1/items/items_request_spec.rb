@@ -49,7 +49,20 @@ describe 'Items API' do
     item = JSON.parse(response.body)
 
     expect(response).to be_successful
-    expect(item["id"]).to eq(item_2.id)
+    expect(item["name"]).to eq(item_2.name)
   end
-  # have to implement now with case insensitive
+
+  it 'can find one item by params description' do
+    merchant_id = create(:merchant).id
+    item_1 = create(:item, id: 1, merchant_id: merchant_id, description: 'great')
+    item_2 = create(:item, id: 2, merchant_id: merchant_id, description: 'useful')
+
+    get '/api/v1/items/find?description=useful'
+
+    item = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(item["description"]).to eq(item_2.description)
+  end
+
 end
