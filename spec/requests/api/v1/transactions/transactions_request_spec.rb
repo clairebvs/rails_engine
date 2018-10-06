@@ -175,5 +175,21 @@ describe 'Transactions API' do
     expect(transactions.first["credit_card_number"]).to eq(transaction_2.credit_card_number)
   end
 
-  # add invoice id for params find before ALL
+  it 'can find all transactions by params result' do
+    merchant_id = create(:merchant).id
+    customer_id = create(:customer).id
+    invoice_id = create(:invoice, merchant_id: merchant_id, customer_id: customer_id).id
+    transaction_1 = create(:transaction, id: 1, invoice_id: invoice_id, result: 'success')
+    transaction_2 = create(:transaction, id: 2, invoice_id: invoice_id, result: 'failed')
+    transaction_3 = create(:transaction, id: 3, invoice_id: invoice_id, result: 'success')
+
+    get '/api/v1/transactions/find_all?result=success'
+
+    transactions = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(transactions.count).to eq(2)
+    expect(transactions.first["result"]).to eq(transaction_1.result)
+  end
+
 end
