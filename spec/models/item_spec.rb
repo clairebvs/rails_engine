@@ -31,7 +31,7 @@ RSpec.describe Item, type: :model do
       transaction = create(:transaction, invoice_id: invoice_id_1, result: 'success')
       transaction2 = create(:transaction, invoice_id: invoice_id_2, result: 'success')
 
-      expect(Item.top_items_by_revenue(1)).to eq(item_2)
+      expect(Item.top_items_by_revenue(1)).to eq([item_2])
     end
   end
 end
