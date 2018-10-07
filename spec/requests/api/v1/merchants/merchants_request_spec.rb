@@ -204,9 +204,7 @@ describe 'Merchants API' do
 
     get "/api/v1/customers/#{customer_id}/favorite_merchant"
 
-    favorite_merchant = JSON.parse(response.body)
-
     expect(response).to be_successful
-    expect(favorite_merchant["name"]).to eq("Joe")
+    expect(response.body).to eq("Joe")
   end
 end
