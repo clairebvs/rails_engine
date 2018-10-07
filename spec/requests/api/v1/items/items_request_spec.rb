@@ -236,4 +236,13 @@ describe 'Items API' do
     expect(response).to be_successful
     expect(invoice.count).to eq(5)
   end
+
+  it 'returns the top x items ranked by total revenue generated' do
+    allow(Item).to receive(:top_items_by_revenue).and_return('key')
+
+    get "/api/v1/items/most_revenue?quantity=1"
+
+    expect(response).to be_successful
+    expect(response.body).to eq("key")
+  end
 end
