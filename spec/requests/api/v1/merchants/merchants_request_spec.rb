@@ -161,4 +161,13 @@ describe 'Merchants API' do
     expect(response).to be_successful
     expect(response.body).to eq("Joe")
   end
+
+  it 'returns the top merchants based on items sold' do
+    allow(Merchant).to receive(:top_merchants_by_items_sold).and_return('Joe')
+
+    get '/api/v1/merchants/most_items?quantity=1'
+
+    expect(response).to be_successful
+    expect(response.body).to eq("Joe")
+  end
 end
