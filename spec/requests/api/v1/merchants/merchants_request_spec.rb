@@ -183,4 +183,17 @@ describe 'Merchants API' do
     expect(response).to be_successful
     expect(merchant_revenue["revenue"]).to eq("0.16")
   end
+
+  it 'returns the total revenue based on successful transactions for a merchant on a specific date for invoice' do
+    allow(Merchant).to receive(:total_revenue_for_a_merchant_on_date).and_return(10)
+
+    merchant_id = create(:merchant, name: 'Joe', id: 2).id
+
+    get "/api/v1/merchants/#{merchant_id}/revenue?date=2018-03-04"
+
+    merchant_revenue = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(merchant_revenue["revenue"]).to eq("0.1")
+  end
 end
