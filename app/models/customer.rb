@@ -11,6 +11,7 @@ class Customer < ApplicationRecord
     .merge(Transaction.successful)
     .where(merchants: {id: merchant})
     .group(:id)
+    .order("amount DESC")
     .limit(1)
     .first
   end
