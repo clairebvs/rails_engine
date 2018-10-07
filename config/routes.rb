@@ -12,6 +12,7 @@ Rails.application.routes.draw do
         get '/most_revenue', to: 'top_merchants_revenue#index'
         get '/most_items', to: 'top_merchants_items#index'
         get '/:id/favorite_customer', to: 'favorite_customer#show'
+        get '/:id/revenue', to: 'revenue#show'
       end
 
       namespace :customers do
