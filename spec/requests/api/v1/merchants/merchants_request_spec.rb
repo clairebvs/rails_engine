@@ -144,12 +144,6 @@ describe 'Merchants API' do
   # Business Intelligence Enpoint
   it 'returns the total revenue for all merchants on a date' do
     allow(Merchant).to receive(:total_revenue_all_merchants_on_date).and_return(12)
-    # merchant = create(:merchant).id
-    # customer_id = create(:customer).id
-    # item_id = create(:item, merchant_id: merchant).id
-    # invoice_id = create(:invoice, merchant_id: merchant, customer_id: customer_id, updated_at: '2018-08-12').id
-    # invoice_item = create(:invoice_item, item_id: item_id, invoice_id: invoice_id, quantity: 2, unit_price: 6)
-    # create(:transaction, result: "success", invoice_id: invoice_id)
 
     get '/api/v1/merchants/revenue?date=2018-08-12'
 
@@ -159,4 +153,47 @@ describe 'Merchants API' do
     expect(merchant_revenue["total_revenue"]).to eq("0.12")
   end
 
+  it 'returns the top merchants based on total revenue' do
+    allow(Merchant).to receive(:top_merchants_by_total_revenue).and_return('Joe')
+
+    get '/api/v1/merchants/most_revenue?quantity=1'
+
+    expect(response).to be_successful
+    expect(response.body).to eq("Joe")
+  end
+
+  it 'returns the top merchants based on items sold' do
+    allow(Merchant).to receive(:top_merchants_by_items_sold).and_return('Joe')
+
+    get '/api/v1/merchants/most_items?quantity=1'
+
+    expect(response).to be_successful
+    expect(response.body).to eq("Joe")
+  end
+
+  it 'returns the total revenue based on successful transactions for a merchant' do
+    allow(Merchant).to receive(:total_revenue_for_a_merchant).and_return(16)
+
+    merchant_id = create(:merchant, name: 'Joe', id: 2).id
+
+    get "/api/v1/merchants/#{merchant_id}/revenue"
+
+    merchant_revenue = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(merchant_revenue["revenue"]).to eq("0.16")
+  end
+
+  it 'returns the total revenue based on successful transactions for a merchant on a specific date for invoice' do
+    allow(Merchant).to receive(:total_revenue_for_a_merchant_on_date).and_return(10)
+
+    merchant_id = create(:merchant, name: 'Joe', id: 2).id
+
+    get "/api/v1/merchants/#{merchant_id}/revenue?date=2018-03-04"
+
+    merchant_revenue = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    expect(merchant_revenue["revenue"]).to eq("0.1")
+  end
 end

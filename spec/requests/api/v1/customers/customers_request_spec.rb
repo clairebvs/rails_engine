@@ -168,4 +168,14 @@ describe 'Customers API' do
     expect(customer.count).to eq(3)
   end
 
+  it 'returns the favorite customer for a merchant based on # of successful transactions' do
+    allow(Customer).to receive(:favorite_customer_by_transaction).and_return('1')
+    merchant_id = create(:merchant, name: 'Joe', id: 2).id
+
+    get "/api/v1/merchants/#{merchant_id}/favorite_customer"
+
+    expect(response).to be_successful
+    expect(response.body).to eq("1")
+  end
+
 end
