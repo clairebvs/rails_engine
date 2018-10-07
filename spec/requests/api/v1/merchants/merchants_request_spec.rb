@@ -196,4 +196,15 @@ describe 'Merchants API' do
     expect(response).to be_successful
     expect(merchant_revenue["revenue"]).to eq("0.1")
   end
+
+  it 'returns a merchant where the customer has conducted the most successful transactions' do
+    allow(Merchant).to receive(:favorite_merchant_for_customer).and_return('Joe')
+
+    customer_id = create(:customer, id: 1).id
+
+    get "/api/v1/customers/#{customer_id}/favorite_merchant"
+
+    expect(response).to be_successful
+    expect(response.body).to eq("Joe")
+  end
 end

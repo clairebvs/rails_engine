@@ -46,4 +46,15 @@ class Merchant < ApplicationRecord
     .where(invoices: {updated_at: date.beginning_of_day..date.end_of_day})
     .sum('quantity*unit_price')
   end
+
+  def self.favorite_merchant_for_customer(customer_id)
+    select("merchants.*, count(transactions.id) as amount")
+    .joins(:invoices, :transactions, :customers)
+    .merge(Transaction.successful)
+    .where(customers: {id: customer_id})
+    .group(:id)
+    .order("amount DESC")
+    .limit(1)
+    .first
+  end
 end
