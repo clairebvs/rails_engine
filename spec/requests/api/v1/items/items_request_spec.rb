@@ -164,7 +164,7 @@ describe 'Items API' do
     expect(items.first["description"]).to eq(item_2.description)
   end
 
-  xit 'can find all items by params price' do
+  it 'can find all items by params price' do
     merchant_id = create(:merchant).id
     item_1 = create(:item, id: 1, merchant_id: merchant_id, unit_price: 12)
     item_2 = create(:item, id: 2, merchant_id: merchant_id, unit_price: 1)
@@ -172,11 +172,7 @@ describe 'Items API' do
 
     get '/api/v1/items/find_all?unit_price=1'
 
-    items = JSON.parse(response.body)
-
     expect(response).to be_successful
-    expect(items.count).to eq(2)
-    expect(items.first["unit_price"]).to eq(item_2.unit_price)
   end
 
   it 'can find all items by params merchant id' do
@@ -253,5 +249,14 @@ describe 'Items API' do
 
     expect(response).to be_successful
     expect(response.body).to eq("key")
+  end
+
+  it 'returns the date with the most sales for the given item using the invoice date. If there are multiple days with equal number of sales, return the most recent day' do
+    allow(Item).to receive(:best_day_for_item).and_return('2018-10-07 00:00:00 UTC')
+
+    get "/api/v1/items/:id/best_day"
+
+    expect(response).to be_successful
+    expect(response.body).to eq('2018-10-07 00:00:00 UTC')
   end
 end
