@@ -256,11 +256,11 @@ describe 'Items API' do
   end
 
   it 'returns the date with the most sales for the given item using the invoice date. If there are multiple days with equal number of sales, return the most recent day' do
-    allow(Item).to receive(:best_day_for_item).and_return('2018-02-03')
+    allow(Item).to receive(:best_day_for_item).and_return('2018-10-07 00:00:00 UTC')
 
     get "/api/v1/items/:id/best_day"
 
     expect(response).to be_successful
-    expect(response.body).to eq('2018-02-03')
+    expect(response.body).to eq('2018-10-07 00:00:00 UTC')
   end
 end

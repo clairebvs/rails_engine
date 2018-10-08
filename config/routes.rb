@@ -50,6 +50,7 @@ Rails.application.routes.draw do
         get '/:id/merchant', to: 'merchant#show'
         get '/most_revenue', to: 'top_items#index'
         get '/most_items', to: 'top_items_by_number#index'
+        get '/:id/best_day', to: 'best_day#show'
       end
 
       namespace :invoice_items do
