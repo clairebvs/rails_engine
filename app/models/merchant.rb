@@ -57,4 +57,5 @@ class Merchant < ApplicationRecord
     .limit(1)
     .first
   end
+
 end
